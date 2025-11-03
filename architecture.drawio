@@ -1,0 +1,49 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="architecture" name="System Architecture">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="external" value="Binance Futures WebSocket&#xa;wss://fstream.binance.com/ws" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="550" y="40" width="300" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="collector" value="Data Collector&#xa;(data_collector.py)&#xa;- Async WebSocket client&#xa;- Auto-reconnect&#xa;- Data normalization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="550" y="160" width="300" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="database" value="Database Layer&#xa;(database.py)&#xa;- SQLite storage&#xa;- SQLAlchemy ORM&#xa;- TickData &amp; OHLCData tables" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="550" y="320" width="300" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="processor" value="Data Processor&#xa;(data_processor.py)&#xa;- Background worker&#xa;- Resample to OHLC&#xa;- Multiple timeframes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="550" y="480" width="300" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="analytics" value="Analytics Engine&#xa;(analytics.py)&#xa;- Price stats&#xa;- OLS regression&#xa;- Z-score, ADF test&#xa;- Rolling correlation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="550" y="640" width="300" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="frontend" value="Streamlit Frontend&#xa;(app.py)&#xa;- Interactive dashboard&#xa;- Real-time charts&#xa;- Alert system&#xa;- Data export" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="550" y="820" width="300" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" value="Real-time Trade Stream" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="external" target="collector">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2" value="Normalized Tick Data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="collector" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow3" value="Stored Data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="database" target="processor">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow4" value="Aggregated OHLC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="processor" target="analytics">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow5" value="Analytics Results" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="analytics" target="frontend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow6" value="Data Query" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="analytics" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow7" value="Data Query" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="frontend" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
